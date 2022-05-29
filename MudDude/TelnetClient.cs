@@ -12,21 +12,14 @@ namespace MudDude
 {
     public class TelnetClient
     {
-        IPAddress ServerIPAddress;
-        int ServerPort;
-        TcpClient MainClient;
-        public char[] ReadData;
+        IPAddress ServerIPAddress = null;
+        int ServerPort = -1;
+        TcpClient MainClient = null;
+        public char[] ReadData = new char[64];
 
         public EventHandler<TextReceivedEventArgs> RaiseTextReceivedEvent;
         public EventHandler<DisconnectedEventArgs> RaiseDisconnectEvent;
 
-        public TelnetClient()
-        {
-            ServerIPAddress = null;
-            ServerPort = -1;
-            MainClient = null;
-            ReadData = new char[64];
-        }
 
         public IPAddress GetServerIPAddress { get { return ServerIPAddress; } }
         public int GetServerPort() { return ServerPort; }
@@ -100,12 +93,12 @@ namespace MudDude
                     if (ReadByteCount == 0)
                     {
                         string[] reason = { "connection", "dropped" };
-                        // TODO add disconnect event
+                        OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
                         MainClient.Close();
                         break;
                     }
 
-                    // TODO text received event
+                    OnRaiseTextReceivedEvent(this, new TextReceivedEventArgs(MainClient.Client.RemoteEndPoint.ToString(), new string(buffer)));
                     Array.Clear(buffer, 0, buffer.Length);
                 }
             }
@@ -122,19 +115,19 @@ namespace MudDude
             {
                 string[] reason = { "connection", "refused" };
                 CloseAndDisconnect();
-                //OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
+                OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
             }
             if (excp.ToString().ToLower().Contains("aborted"))
             {
                 string[] reason = { "host", "disconnected" };
                 CloseAndDisconnect();
-                //OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
+                OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
             }
             else
             {
                 CloseAndDisconnect();
                 string[] reason = { "unknown", "reason" };
-                //OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
+                OnDisconnectEvent(this, new DisconnectedEventArgs(reason));
             }
         }
 

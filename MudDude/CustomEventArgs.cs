@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace MudDude
 {
-    public class ClientConnectedEventArgs : EventArgs
-    {
-        public string NewClient { get; set; }
+    //public class ClientConnectedEventArgs : EventArgs
+    //{
+    //    public string NewClient { get; set; }
 
-        public ClientConnectedEventArgs(string _newClient)
-        {
-            NewClient = _newClient;
-        }
-    }
+    //    public ClientConnectedEventArgs(string _newClient)
+    //    {
+    //        NewClient = _newClient;
+    //    }
+    //}
+
 
     public class TextReceivedEventArgs : EventArgs
     {
