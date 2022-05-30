@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.IO;
 
+
 namespace MudDude
 {
     public class TelnetClient
@@ -17,9 +18,15 @@ namespace MudDude
         TcpClient MainClient = null;
         public char[] ReadData = new char[64];
 
+        Core MainCore;
+
         public EventHandler<TextReceivedEventArgs> RaiseTextReceivedEvent;
         public EventHandler<DisconnectedEventArgs> RaiseDisconnectEvent;
 
+        public TelnetClient(Core _MainCore)
+        {
+            MainCore = _MainCore;
+        }
 
         public IPAddress GetServerIPAddress { get { return ServerIPAddress; } }
         public int GetServerPort() { return ServerPort; }
