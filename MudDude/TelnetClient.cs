@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.IO;
+using System.Diagnostics;
 
 
 namespace MudDude
@@ -33,14 +34,27 @@ namespace MudDude
 
         public bool SetServerIPAddress(string _ServerIPAddress)
         {
-            IPAddress ipAddress = null;
+            IPAddress ipAddress;
+
+            // check if raw IP
             if (!IPAddress.TryParse(_ServerIPAddress, out ipAddress))
             {
-                return false;
+                // not IP address, check if domain name
+                if (DoDNSLookup(_ServerIPAddress, out ipAddress))
+                {
+                    ServerIPAddress = ipAddress;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-
-            ServerIPAddress = ipAddress;
-            return true;
+            else
+            {
+                ServerIPAddress = ipAddress;
+                return true;
+            }
         }
 
         public bool SetServerPort(int _ServerPort)
@@ -52,6 +66,22 @@ namespace MudDude
             }
             else
             {
+                return false;
+            }
+        }
+
+        public bool DoDNSLookup(string hostname, out IPAddress ipAddress)
+        {
+            try
+            {
+                ipAddress = Dns.GetHostAddresses(hostname)[0];
+                Debug.WriteLine("DNS Lookup success!  " + hostname + " resolves to " + ipAddress.ToString());
+                return true;
+            }
+            catch (Exception)
+            {
+                ipAddress = null;
+                Debug.WriteLine("DNS Lookup failure!");
                 return false;
             }
         }
@@ -69,12 +99,18 @@ namespace MudDude
 
             try
             {
+                if (ServerIPAddress == null)
+                {
+                    
+                    return;
+                }
+                Debug.WriteLine("Connecting to: " + ServerIPAddress.ToString() + "...");
                 await MainClient.ConnectAsync(ServerIPAddress, ServerPort);
                 ReadDataAsync(MainClient);
             }
             catch (Exception excp)
             {
-                Console.WriteLine("ConnectToServer Error: "+ excp.ToString());
+                Debug.WriteLine("ConnectToServer Error: "+ excp.ToString());
                 ProcessConnectionProblem(excp);
                 throw;
             }

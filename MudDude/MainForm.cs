@@ -5,6 +5,11 @@ namespace MudDude
 
         Core MainCore;
 
+        // Local UI vars
+        private bool isConnected = false;
+        private bool isLoggedIn = false;
+        private bool isInGame = false;
+
         public MainForm()
         {
             InitializeComponent();
@@ -12,22 +17,50 @@ namespace MudDude
             
         }
 
+        // Get/Set
+        public bool GetIsConnected() { return isConnected; }
+        public bool GetIsLoggedIn() { return isLoggedIn; }
+        public bool GetIsInGame() { return isInGame; }
+
+        public void SetIsConnected(bool _isConnected) { this.isConnected = _isConnected; }
+        public void SetIsLoggedIn(bool _isLoggedIn) { this.isLoggedIn = _isLoggedIn; }
+        public void SetIsInGame(bool _isInGame) { this.isInGame = _isInGame; }
+
+
+        // Called when any changes are made for form vars
+        public void UpdateForm()
+        {
+            UpdateConnectionLabels();
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
-            HideLabelButtons();
+            UpdateForm();
         }
 
-        private void HideLabelButtons()
+        private void UpdateConnectionLabels()
         {
-            lblConnected.Visible = false;
-            lblInGame.Visible = false;
-            lblLoggedIn.Visible = false;
+            if (isConnected) 
+                lblConnected.Visible = true;
+            else
+                lblConnected.Visible = false;
+            if (isLoggedIn)
+                lblLoggedIn.Visible = true;
+            else
+                lblLoggedIn.Visible = false;
+            if (isInGame)
+                lblInGame.Visible = true;
+            else
+                lblInGame.Visible = false;            
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            // TODO replace these magic numbers
             MainCore.ConnectToServer();
+        }
+
+        public void ShowErrorMessage(string _ErrorMessge)
+        {
+            MessageBox.Show(_ErrorMessge);
         }
     }
 }

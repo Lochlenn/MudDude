@@ -13,19 +13,45 @@ namespace MudDude
         TelnetClient netClient;
         Parser parser;
 
+        private EventHandler<TextReceivedEventArgs> RaiseTextReceivedEvent;
+        private EventHandler<DisconnectedEventArgs> RaiseDisconnectedEvent;
+
         public Core(MainForm _MainForm)
         {
-
             mainForm = _MainForm;
             netClient = new TelnetClient(this);
             parser = new Parser(this);
+
+            if (RaiseTextReceivedEvent == null)
+                RaiseTextReceivedEvent += OnRaiseTextReceived;
+            if (RaiseDisconnectedEvent == null)
+                RaiseDisconnectedEvent += OnRaiseDisconnectEvent;
         }
 
-        public void ConnectToServer()
+        public async Task ConnectToServer()
         {
-            netClient.SetServerIPAddress("10.0.100.125");
-            netClient.SetServerPort(23);
-            netClient.ConnectToServer();
+            // TODO magic numbers
+            if (netClient.SetServerIPAddress("ministrybbs.com"))
+            {
+                netClient.SetServerPort(23123);
+                await netClient.ConnectToServer();
+            }
+            else
+            {
+                // failed to set ip address, likely dns lookup failure
+                mainForm.ShowErrorMessage("host/port failure, check entries");
+            }
+            
+        }
+
+        private void OnRaiseTextReceived(object sender, TextReceivedEventArgs trea)
+        {
+
+        }
+
+        private void OnRaiseDisconnectEvent(object sender, DisconnectedEventArgs dcea)
+        {
+
         }
     }
 }
