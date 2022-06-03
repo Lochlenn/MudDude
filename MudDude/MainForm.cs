@@ -4,6 +4,7 @@ namespace MudDude
     {
 
         Core MainCore;
+        Settings SettingsForm;
 
         // Local UI vars
         private bool isConnected = false;
@@ -14,7 +15,7 @@ namespace MudDude
         {
             InitializeComponent();
             MainCore = new Core(this);
-            
+            SettingsForm = new Settings();
         }
 
         // Get/Set
@@ -61,6 +62,11 @@ namespace MudDude
         public void ShowErrorMessage(string _ErrorMessge)
         {
             MessageBox.Show(_ErrorMessge);
+        }
+
+        private void editSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsForm.Show();
         }
     }
 }

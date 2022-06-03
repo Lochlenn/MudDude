@@ -31,9 +31,8 @@ namespace MudDude
         public async Task ConnectToServer()
         {
             // TODO magic numbers
-            if (netClient.SetServerIPAddress("ministrybbs.com"))
+            if (netClient.SetServerIPAddress(MudDude.Default.ServerAddress) && netClient.SetServerPort(MudDude.Default.ServerPort))
             {
-                netClient.SetServerPort(23123);
                 await netClient.ConnectToServer();
             }
             else
