@@ -20,9 +20,9 @@ namespace MudDude
     public class TextReceivedEventArgs : EventArgs
     {
         public string ClientWhoSentText { get; set; }
-        public string TextReceived { get; set; }
+        public char[] TextReceived { get; set; }
 
-        public TextReceivedEventArgs(string _clientWhoSentText, string _textReceived)
+        public TextReceivedEventArgs(string _clientWhoSentText, char[] _textReceived)
         {
             ClientWhoSentText = _clientWhoSentText;
             TextReceived = _textReceived;
@@ -36,6 +36,16 @@ namespace MudDude
         public DisconnectedEventArgs(string[] _disconnectReason)
         {
             DisconnectReason = _disconnectReason;
+        }
+    }
+
+    public class SendTextEventArgs : EventArgs
+    {
+        public char CharToSend { get; set; }
+
+        public SendTextEventArgs(char _charToSend)
+        {
+            CharToSend = _charToSend;
         }
     }
 }

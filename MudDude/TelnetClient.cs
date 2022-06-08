@@ -23,6 +23,9 @@ namespace MudDude
 
         public EventHandler<TextReceivedEventArgs> RaiseTextReceivedEvent;
         public EventHandler<DisconnectedEventArgs> RaiseDisconnectEvent;
+        public EventHandler<SendTextEventArgs> RaiseSendTextEvent;
+
+        StreamWriter ClientStreamWriter;
 
         public TelnetClient(Core _MainCore)
         {
@@ -106,6 +109,7 @@ namespace MudDude
                 }
                 Debug.WriteLine("Connecting to: " + ServerIPAddress.ToString() + "...");
                 await MainClient.ConnectAsync(ServerIPAddress, ServerPort);
+                ClientStreamWriter = new StreamWriter(MainClient.GetStream());
                 ReadDataAsync(MainClient);
             }
             catch (Exception excp)
@@ -114,6 +118,12 @@ namespace MudDude
                 ProcessConnectionProblem(excp);
                 throw;
             }
+        }
+
+        public void SendCharToServer(char CharToSend)
+        {
+            ClientStreamWriter.Write(CharToSend);
+            ClientStreamWriter.Flush();
         }
 
         private async Task ReadDataAsync(TcpClient client)
@@ -140,8 +150,8 @@ namespace MudDude
                         MainClient.Close();
                         break;
                     }
-
-                    OnRaiseTextReceivedEvent(this, new TextReceivedEventArgs(MainClient.Client.RemoteEndPoint.ToString(), new string(buffer)));
+                    //Debug.WriteLine("Text received");
+                    OnRaiseTextReceivedEvent(this, new TextReceivedEventArgs(MainClient.Client.RemoteEndPoint.ToString(), buffer));
                     Array.Clear(buffer, 0, buffer.Length);
                 }
             }
@@ -177,7 +187,7 @@ namespace MudDude
         public void OnRaiseTextReceivedEvent(object sender, TextReceivedEventArgs trea)
         {
             EventHandler<TextReceivedEventArgs> handler = RaiseTextReceivedEvent;
-
+            Debug.WriteLine("Event triggered!");
             if (handler != null)
             {
                 handler(this, trea);

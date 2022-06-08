@@ -4,7 +4,7 @@ namespace MudDude
     {
 
         Core MainCore;
-        Settings SettingsForm;
+
 
         // Local UI vars
         private bool isConnected = false;
@@ -14,8 +14,7 @@ namespace MudDude
         public MainForm()
         {
             InitializeComponent();
-            MainCore = new Core(this);
-            SettingsForm = new Settings();
+            MainCore = new Core(this);            
         }
 
         // Get/Set
@@ -36,6 +35,7 @@ namespace MudDude
         private void MainForm_Load(object sender, EventArgs e)
         {
             UpdateForm();
+            
         }
 
         private void UpdateConnectionLabels()
@@ -66,7 +66,12 @@ namespace MudDude
 
         private void editSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SettingsForm.Show();
+            MainCore.OpenSettingsForm();
+        }
+
+        private void btnDebugWindow_Click(object sender, EventArgs e)
+        {
+            MainCore.OpenDebugWindows();
         }
     }
 }

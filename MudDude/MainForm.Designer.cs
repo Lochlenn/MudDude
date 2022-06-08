@@ -39,6 +39,7 @@
             this.editSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnDebugWindow = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +88,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(233, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -116,7 +117,7 @@
             // editSettingsToolStripMenuItem
             // 
             this.editSettingsToolStripMenuItem.Name = "editSettingsToolStripMenuItem";
-            this.editSettingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editSettingsToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.editSettingsToolStripMenuItem.Text = "&Edit Settings";
             this.editSettingsToolStripMenuItem.Click += new System.EventHandler(this.editSettingsToolStripMenuItem_Click);
             // 
@@ -131,14 +132,25 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "&About";
+            // 
+            // btnDebugWindow
+            // 
+            this.btnDebugWindow.Location = new System.Drawing.Point(146, 69);
+            this.btnDebugWindow.Name = "btnDebugWindow";
+            this.btnDebugWindow.Size = new System.Drawing.Size(75, 23);
+            this.btnDebugWindow.TabIndex = 5;
+            this.btnDebugWindow.Text = "Debug";
+            this.btnDebugWindow.UseVisualStyleBackColor = true;
+            this.btnDebugWindow.Click += new System.EventHandler(this.btnDebugWindow_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(233, 452);
+            this.Controls.Add(this.btnDebugWindow);
             this.Controls.Add(this.lblInGame);
             this.Controls.Add(this.lblLoggedIn);
             this.Controls.Add(this.lblConnected);
@@ -168,5 +180,6 @@
         private ToolStripMenuItem editSettingsToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private Button btnDebugWindow;
     }
 }
